@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import Jumbotron from "../../components/Jumbotron";
-import searchAPI from "../../utils/searchAPI";
+import BookCard from "../../components/BookCard";
+import API from "../../utils/API";
 import "./search.css";
 
 function Search() {
 
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
+  const [search, setSearch] = useState("");
+  const [books, setBooks] = useState([]);
 
-  const handleSearch = e => {
-    e.preventDefault();
-    console.log("title is " + title);
-    console.log("author is " + author);
-    // return searchAPI.searchBooks(title, author);
+  function handleInputChange(event) {
+    setSearch(event.target.value.replace(/ /g, "+"));
+  }
+
+  function handleFormSubmit(event) {
+    event.preventDefault();
+    API.searchBooks(search)
+      .then(res => setBooks(res.data.items))
+      .catch(err => console.log(err));
   }
 
   return (
@@ -21,16 +26,12 @@ function Search() {
       <div className="container">
         <Jumbotron />
 
-        <form onSubmit={handleSearch}>
-          <p>Book Search</p>
+        <form onSubmit={handleFormSubmit}>
+          <h4>Book Search</h4>
           <div className="row search-box">
-            <div className="col-6 title-search">
-              <input className="form-control title-input" type="text" placeholder="Title" aria-label="Search"
-                onChange={e => setTitle(e.target.value.replace(/ /g, "+"))}></input>
-            </div>
-            <div className="col-6 author-search">
-              <input className="form-control author-input" type="text" placeholder="Author" aria-label="Search"
-                onChange={e => setAuthor(e.target.value.replace(/ /g, "+"))}></input>
+            <div className="col-12 search-input">
+              <input className="form-control" type="text" placeholder="Search" aria-label="Search"
+                onChange={handleInputChange}></input>
             </div>
           </div>
           <div className="row button-row justify-content-end">
@@ -38,6 +39,15 @@ function Search() {
           </div>
         </form>
 
+        <div className="row search-results">
+          <h4>Results</h4>
+          {books ? books.map(book => (
+            <BookCard
+              key={book.id}
+              volumeInfo={book.volumeInfo}
+            />
+          )) : null}
+        </div>
       </div>
 
     </>

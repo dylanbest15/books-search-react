@@ -5,3 +5,26 @@ div.search-box {
 div.button-row {
   padding-right: 15px;
 }
+
+div.search-results h4 {
+  padding-left: 15px;
+}
+
+div.card {
+  width: 100%;
+}
+
+div.card-body {
+  padding: 35px;
+}
+
+div.card-body img.card-image {
+  float: left;
+  margin-right: 10px;
+}
+
+div.card-body button {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
