@@ -5,7 +5,7 @@ function BookCard({ volumeInfo }) {
     <div className="card">
       <div className="card-body">
         <h5 className="card-title">{volumeInfo.title}</h5>
-        <h6 className="card-author">Written By {volumeInfo.authors.join(", ")}</h6>
+        <h6 className="card-author">Written By {volumeInfo.authors ? volumeInfo.authors.join(", ") : "Unknown Author"}</h6>
 
         <p className="card-text">
           <img className="card-image" src={volumeInfo.imageLinks.thumbnail} alt={volumeInfo.title}></img>
