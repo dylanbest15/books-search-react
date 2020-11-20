@@ -45,6 +45,7 @@ function Search() {
             <BookCard
               key={book.id}
               volumeInfo={book.volumeInfo}
+              bookId={book.id}
               button="search"
             />
           )) : null}

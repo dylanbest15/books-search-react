@@ -1,25 +1,25 @@
 import React from "react";
 import API from "../../utils/API";
 
-function BookCard({ key, volumeInfo, button }) {
+function BookCard({ bookId, volumeInfo, button }) {
 
-  function handleSaveClick(key, volumeInfo) {
+  function handleSaveClick(bookId, volumeInfo) {
     // event.preventDefault();
     API.saveBook({
-      _id: key,
       title: volumeInfo.title,
       authors: volumeInfo.authors,
       image: volumeInfo.imageLinks.thumbnail,
       synopsis: volumeInfo.description,
-      link: volumeInfo.infoLink
+      link: volumeInfo.infoLink,
+      bookId: bookId
     })
       .then(res => console.log(res))
       .catch(err => console.log(err));
   }
 
-  function handleDeleteClick(key) {
+  function handleDeleteClick(bookId) {
     // event.preventDefault();
-    API.deleteBook(key)
+    API.deleteBook(bookId)
       .then(res => console.log(res))
       .catch(err => console.log(err));
   }
@@ -34,9 +34,9 @@ function BookCard({ key, volumeInfo, button }) {
           <img className="card-image" src={volumeInfo.imageLinks.thumbnail} alt={volumeInfo.title}></img>
           {volumeInfo.description || "No description provided by Google Books."}</p>
 
-        {button === "search" ? 
-          <button className="btn btn-primary" onClick={() => handleSaveClick(key, volumeInfo)}>Save</button> :
-          <button className="btn btn-primary" onClick={() => handleDeleteClick(key)}>Delete</button>
+        {button === "search"
+          ? <button className="btn btn-primary" onClick={() => handleSaveClick(bookId, volumeInfo)}>Save</button>
+          : <button className="btn btn-primary" onClick={() => handleDeleteClick(bookId)}>Delete</button>
         }
         
       </div>
