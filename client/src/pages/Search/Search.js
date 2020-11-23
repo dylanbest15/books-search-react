@@ -16,8 +16,8 @@ function Search() {
   function handleFormSubmit(event) {
     event.preventDefault();
     API.searchBooks(search)
-      .then(res => setBooks(res.data.items))
-      .catch(err => console.log(err));
+      .then(res => setBooks(res.data.items) + console.log(res))
+      .catch(err => window.location.reload());
   }
 
   return (

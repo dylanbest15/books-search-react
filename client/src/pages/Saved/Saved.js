@@ -9,7 +9,7 @@ function Saved() {
 
   useEffect(() => {
     API.getBooks()
-      .then(res => setBooks(res.data))
+      .then(res => setBooks(res.data) + console.log(res.data))
       .catch(err => console.log(err));
   }, [])
 
@@ -25,6 +25,7 @@ function Saved() {
             <BookCard
               key={book._id}
               volumeInfo={book}
+              bookId={book._id}
               button="delete"
             />
           )) : null}

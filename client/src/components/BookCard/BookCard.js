@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import API from "../../utils/API";
 
 function BookCard({ bookId, volumeInfo, button }) {
 
+  const [saveText, setSaveText] = useState("");
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    setSaveText("Save");
+  }, []);
+
   function handleSaveClick(bookId, volumeInfo) {
-    // event.preventDefault();
+    setSaveText("Saved!");
+    setDisabled(true);
     API.saveBook({
       title: volumeInfo.title,
       authors: volumeInfo.authors,
@@ -18,7 +26,7 @@ function BookCard({ bookId, volumeInfo, button }) {
   }
 
   function handleDeleteClick(bookId) {
-    // event.preventDefault();
+    window.location.reload();
     API.deleteBook(bookId)
       .then(res => console.log(res))
       .catch(err => console.log(err));
@@ -31,14 +39,26 @@ function BookCard({ bookId, volumeInfo, button }) {
         <h6 className="card-author">Written By {volumeInfo.authors ? volumeInfo.authors.join(", ") : "Unknown Author"}</h6>
 
         <p className="card-text">
-          <img className="card-image" src={volumeInfo.imageLinks.thumbnail} alt={volumeInfo.title}></img>
-          {volumeInfo.description || "No description provided by Google Books."}</p>
+          <img className="card-image"
+            src={button === "search" ? volumeInfo.imageLinks.thumbnail : volumeInfo.image}
+            alt={volumeInfo.title}></img>
 
-        {button === "search"
-          ? <button className="btn btn-primary" onClick={() => handleSaveClick(bookId, volumeInfo)}>Save</button>
-          : <button className="btn btn-primary" onClick={() => handleDeleteClick(bookId)}>Delete</button>
+          {button === "search" 
+            ? volumeInfo.description || "No description provided by Google Books." 
+            : volumeInfo.synopsis || "No description provided by Google Books."
+          }</p>
+
+        {button === "search" 
+          ? <a href={volumeInfo.infoLink}>{volumeInfo.infoLink}</a>
+          : <a href={volumeInfo.link}>{volumeInfo.link}</a>
         }
         
+
+        {button === "search"
+          ? <button className="btn btn-primary" onClick={() => handleSaveClick(bookId, volumeInfo)} disabled={disabled}>{saveText}</button>
+          : <button className="btn btn-primary" onClick={() => handleDeleteClick(bookId)}>Delete</button>
+        }
+
       </div>
     </div>
   )
